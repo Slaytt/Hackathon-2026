@@ -1,0 +1,20 @@
+[
+    {
+        "id": "calc-l1",
+        "name": "Calculatrice",
+        "author": "L1_Anonyme",
+        "icon": "computer",
+        "entry_point": "./noeuds/calc-l1/index.html",
+        "dependencies": []
+    },
+    {
+        "id": "ru-menu",
+        "name": "Menu RU St-Charles",
+        "author": "M1_Hackathon",
+        "icon": "notepad",
+        "entry_point": "./noeuds/ru-menu/index.html",
+        "dependencies": [
+            "calc-l1"
+        ]
+    }
+]
