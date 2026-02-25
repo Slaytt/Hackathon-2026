@@ -14,3 +14,13 @@ body {
 #root {
   user-select: none;
 }
+
+/* Rend la fenêtre géante quand on clique sur Agrandir */
+.maximized {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  /* On enlève 40px pour ne pas cacher la barre des tâches en bas */
+  height: calc(100vh - 40px) !important;
+  transform: none !important;
+}

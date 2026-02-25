@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Rnd } from 'react-rnd';
 
-function Window({ app, onClose, onFocus, zIndex }) {
-    // On crée un état pour savoir si on est en train de bouger la fenêtre
+function Window({ app, onClose, onFocus, zIndex, isMinimized, onMinimize }) {
     const [isDragging, setIsDragging] = useState(false);
+    const [isMaximized, setIsMaximized] = useState(false); // Nouvel état pour le plein écran !
 
     return (
         <Rnd
+            disableDragging={isMaximized} // On interdit de déplacer si on est en plein écran
+            enableResizing={!isMaximized} // Pareil pour le redimensionnement
             default={{
                 x: 100 + Math.random() * 50,
                 y: 100 + Math.random() * 50,
@@ -16,21 +18,22 @@ function Window({ app, onClose, onFocus, zIndex }) {
             minWidth={300}
             minHeight={200}
             bounds="parent"
-            style={{ zIndex: zIndex }}
-            className="window"
-            // --- LA MAGIE EST ICI ---
+            // On cache la fenêtre si elle est réduite (display: none)
+            style={{ zIndex: zIndex, display: isMinimized ? 'none' : 'block' }}
+            // On ajoute la classe CSS qu'on vient de créer si maximisée
+            className={`window ${isMaximized ? 'maximized' : ''}`}
             onDragStart={() => { onFocus(); setIsDragging(true); }}
             onDragStop={() => setIsDragging(false)}
             onResizeStart={() => setIsDragging(true)}
             onResizeStop={() => setIsDragging(false)}
-        // ------------------------
         >
-            <div className="title-bar" onMouseDown={onFocus} style={{ cursor: 'move' }}>
+            <div className="title-bar" onMouseDown={onFocus} style={{ cursor: isMaximized ? 'default' : 'move' }}>
                 <div className="title-bar-text">{app.name} - {app.author}</div>
                 <div className="title-bar-controls">
-                    <button aria-label="Minimize"></button>
-                    <button aria-label="Maximize"></button>
-                    <button aria-label="Close" onClick={() => onClose(app.id)}></button>
+                    {/* Les vrais boutons de contrôle ! */}
+                    <button aria-label="Minimize" onClick={(e) => { e.stopPropagation(); onMinimize(); }}></button>
+                    <button aria-label="Maximize" onClick={(e) => { e.stopPropagation(); setIsMaximized(!isMaximized); }}></button>
+                    <button aria-label="Close" onClick={(e) => { e.stopPropagation(); onClose(app.id); }}></button>
                 </div>
             </div>
 
@@ -38,11 +41,7 @@ function Window({ app, onClose, onFocus, zIndex }) {
                 <iframe
                     src={app.entry_point}
                     style={{
-                        width: '100%',
-                        height: '100%',
-                        border: 'none',
-                        backgroundColor: '#fff',
-                        // On désactive la souris sur l'iframe pendant le mouvement !
+                        width: '100%', height: '100%', border: 'none', backgroundColor: '#fff',
                         pointerEvents: isDragging ? 'none' : 'auto'
                     }}
                     title={app.name}
