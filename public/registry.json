@@ -1,5 +1,13 @@
 [
     {
+        "id": "explorateur",
+        "name": "Explorateur",
+        "author": "AMU System",
+        "icon": "folder",
+        "entry_point": "./noeuds/explorateur/index.html",
+        "dependencies": []
+    },
+    {
         "id": "calc-l1",
         "name": "Calculatrice",
         "author": "L3_slayt",

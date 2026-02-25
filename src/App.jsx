@@ -9,6 +9,13 @@ function App() {
   const [minimizedWindows, setMinimizedWindows] = useState([]);
   const [isStartMenuOpen, setIsStartMenuOpen] = useState(false);
 
+  const openApp = (appId) => {
+    setOpenWindows(prev => prev.includes(appId) ? prev : [...prev, appId]);
+    setMinimizedWindows(prev => prev.filter(id => id !== appId));
+    setActiveWindowId(appId);
+    setIsStartMenuOpen(false);
+  };
+
   useEffect(() => {
     const audio = new Audio('https://www.myinstants.com/media/sounds/windows-xp-startup.mp3');
     audio.play().catch(() => console.log("Cliquez pour le son"));
@@ -17,16 +24,16 @@ function App() {
       .then(res => res.json())
       .then(data => setRegistry(data))
       .catch(err => console.error("Erreur de chargement du registry :", err));
-  }, []);
 
-  const openApp = (appId) => {
-    if (!openWindows.includes(appId)) {
-      setOpenWindows([...openWindows, appId]);
-    }
-    setMinimizedWindows(minimizedWindows.filter(id => id !== appId));
-    setActiveWindowId(appId);
-    setIsStartMenuOpen(false);
-  };
+    const handleMessage = (event) => {
+      if (event.data && event.data.type === 'OPEN_APP') {
+        openApp(event.data.id);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
   const closeApp = (appId) => {
     setOpenWindows(openWindows.filter(id => id !== appId));
@@ -67,6 +74,17 @@ function App() {
           </div>
           <div style={{ fontSize: '12px', marginTop: '5px', fontFamily: 'Tahoma, sans-serif', fontWeight: 'bold' }}>Corbeille</div>
         </div>
+
+        {/* Icône statique Internet Explorer (Lien externe) */}
+        <a
+          href="https://google.com" target="_blank" rel="noopener noreferrer"
+          style={{ width: '80px', textAlign: 'center', color: 'white', cursor: 'pointer', textShadow: '2px 2px 4px #000', textDecoration: 'none' }}
+        >
+          <div style={{ fontSize: '35px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50px' }}>
+            <img src="/internet-explorer.png" alt="Internet Explorer" style={{ width: '110px', height: '110px', objectFit: 'contain' }} />
+          </div>
+          <div style={{ fontSize: '12px', marginTop: '5px', fontFamily: 'Tahoma, sans-serif', fontWeight: 'bold' }}>Internet Explorer</div>
+        </a>
 
         {registry.map((app) => (
           <div
@@ -136,7 +154,7 @@ function App() {
               >
                 {/* Boîte d'icône plus petite (22px) et centrée, avec marge fixe */}
                 <div style={{ width: '22px', display: 'flex', justifyContent: 'center', marginRight: '8px' }}>
-                  <span style={{ fontSize: '16px' }}>🚀</span>
+                  <span style={{ fontSize: '16px' }}></span>
                 </div>
                 <span>{app.name}</span>
               </div>
