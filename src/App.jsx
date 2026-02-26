@@ -17,7 +17,7 @@ function App() {
   };
 
   useEffect(() => {
-    const audio = new Audio('https://www.myinstants.com/media/sounds/windows-xp-startup.mp3');
+    const audio = new Audio('/windows-xp-startup.mp3');
     audio.play().catch(() => console.log("Cliquez pour le son"));
 
     fetch('/registry.json')
