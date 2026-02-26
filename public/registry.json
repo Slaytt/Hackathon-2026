@@ -33,7 +33,7 @@
         "author": "hichemmederbel",
         "icon": "computer",
         "entry_point": "./noeuds/sci-calc/index.html",
-        "short_description": "Calculatrice scientifique",
+        "short_description": "Calculatrice scientifique nul",
         "dependencies": []
     },
     {
