@@ -13,6 +13,7 @@
         "name": "Calculatrice",
         "author": "slaytt",
         "icon": "computer",
+        "color": "#a882ff",
         "entry_point": "./noeuds/calc-l1/index.html",
         "short_description": "Calculatrice simple",
         "dependencies": []
@@ -22,6 +23,7 @@
         "name": "Menu RU St-Charles",
         "author": "hichemmederbel",
         "icon": "notepad",
+        "color": "#4db8ff",
         "entry_point": "./noeuds/ru-menu/index.html",
         "short_description": "Menu du restaurant universitaire St-Charles",
         "dependencies": [
