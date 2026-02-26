@@ -41,7 +41,7 @@
     {
         "id": "ru-menu",
         "name": "Menu RU St-Charles",
-        "author": "hichemmederbel",
+        "author": "sashsutton",
         "icon": "notepad",
         "color": "#4db8ff",
         "entry_point": "./noeuds/ru-menu/index.html",
